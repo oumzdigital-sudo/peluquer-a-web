@@ -118,8 +118,42 @@
             margin-top: 0.5rem;
             display: none;
         }
-        .service.show img {
-            display: block;
+        .calendar {
+            background: rgba(255, 255, 255, 0.95);
+            color: #222;
+            padding: 1rem;
+            border-radius: 12px;
+            max-width: 300px;
+            margin: 1rem auto;
+        }
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+        }
+        .calendar-day {
+            padding: 0.5rem;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        .calendar-day:hover {
+            background: #f0f0f0;
+        }
+        .calendar-day.selected {
+            background: #ff6b6b;
+            color: white;
+        }
+        .calendar-day.disabled {
+            color: #ccc;
+            cursor: not-allowed;
         }
         @media (max-width: 700px) {
             .services {
@@ -166,7 +200,7 @@
         <a href="#inicio">Inicio</a>
         <a href="#servicios">Servicios</a>
         <a href="#galeria">Galería</a>
-        <a href="#contacto">Contacto</a>
+        <a href="#contacto">Citas</a>
     </nav>
     <section id="inicio">
         <h2>Bienvenido</h2>
@@ -206,9 +240,10 @@
         <p>Aquí irían imágenes de nuestros trabajos. (Puedes agregar imágenes aquí)</p>
     </section>
     <section id="contacto">
-        <h2>Contacto</h2>
+        <h2>Agendar Cita</h2>
+        <div class="calendar" id="calendar"></div>
+        <p>Selecciona una fecha disponible y llama al (123) 456-7890 para confirmar tu cita.</p>
         <p>Dirección: Calle Ficticia 123, Ciudad</p>
-        <p>Teléfono: (123) 456-7890</p>
         <p>Email: info@peluqueriaelegante.com</p>
     </section>
     <footer>
@@ -226,6 +261,79 @@
         function agendarCita() {
             alert('¡Gracias por tu interés! Llama al (123) 456-7890 para agendar tu cita.');
         }
+
+        // Calendario simple
+        function createCalendar() {
+            const calendar = document.getElementById('calendar');
+            const today = new Date();
+            const currentMonth = today.getMonth();
+            const currentYear = today.getFullYear();
+
+            const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                              'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+            const header = document.createElement('div');
+            header.className = 'calendar-header';
+            header.innerHTML = `
+                <button onclick="changeMonth(-1)">◀</button>
+                <h3>${monthNames[currentMonth]} ${currentYear}</h3>
+                <button onclick="changeMonth(1)">▶</button>
+            `;
+            calendar.appendChild(header);
+
+            const grid = document.createElement('div');
+            grid.className = 'calendar-grid';
+
+            // Días de la semana
+            const days = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+            days.forEach(day => {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day';
+                dayElement.textContent = day;
+                dayElement.style.fontWeight = 'bold';
+                grid.appendChild(dayElement);
+            });
+
+            // Días del mes
+            const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+            const lastDay = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+            for (let i = 0; i < firstDay; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.className = 'calendar-day disabled';
+                grid.appendChild(emptyDay);
+            }
+
+            for (let day = 1; day <= lastDay; day++) {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day';
+                dayElement.textContent = day;
+                dayElement.onclick = () => selectDate(day, currentMonth, currentYear);
+                grid.appendChild(dayElement);
+            }
+
+            calendar.appendChild(grid);
+        }
+
+        function selectDate(day, month, year) {
+            const selectedDate = new Date(year, month, day);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            if (selectedDate >= today) {
+                alert(`Fecha seleccionada: ${day}/${month + 1}/${year}\n\nLlama al (123) 456-7890 para confirmar tu cita.`);
+            } else {
+                alert('Por favor selecciona una fecha futura.');
+            }
+        }
+
+        function changeMonth(direction) {
+            // Para simplificar, recarga la página. En un calendario real, cambiaría el mes dinámicamente.
+            alert('Funcionalidad de cambio de mes próximamente. Por ahora, selecciona fechas de este mes.');
+        }
+
+        // Inicializar calendario cuando se carga la página
+        window.onload = createCalendar;
     </script>
 </body>
 </html>
