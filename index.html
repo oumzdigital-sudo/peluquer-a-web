@@ -36,6 +36,33 @@
             color: white;
             text-align: center;
             padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header-content {
+            flex: 1;
+        }
+        .menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .cita-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .cita-btn:hover {
+            background: #ff5252;
         }
         nav {
             background: rgba(0, 0, 0, 0.7);
@@ -103,6 +130,21 @@
                 display: inline-block;
                 margin: 0.5rem;
             }
+            .menu-btn {
+                display: block;
+            }
+            nav {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.9);
+            }
+            nav.show {
+                display: flex;
+            }
         }
     </style>
 </head>
@@ -113,8 +155,12 @@
     </video>
     <div class="overlay"></div>
     <header>
-        <h1>Peluquería Elegante</h1>
-        <p>Tu estilo, nuestra pasión</p>
+        <button class="menu-btn" onclick="toggleMenu()">☰</button>
+        <div class="header-content">
+            <h1>Peluquería Elegante</h1>
+            <p>Tu estilo, nuestra pasión</p>
+        </div>
+        <button class="cita-btn" onclick="agendarCita()">Agendar Cita</button>
     </header>
     <nav>
         <a href="#inicio">Inicio</a>
@@ -172,6 +218,13 @@
         function toggleImages(element) {
             const service = element.parentElement;
             service.classList.toggle('show');
+        }
+        function toggleMenu() {
+            const nav = document.querySelector('nav');
+            nav.classList.toggle('show');
+        }
+        function agendarCita() {
+            alert('¡Gracias por tu interés! Llama al (123) 456-7890 para agendar tu cita.');
         }
     </script>
 </body>
