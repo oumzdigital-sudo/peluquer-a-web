@@ -9,56 +9,109 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: green;
-            color: #333;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+        }
+        .bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: -1;
         }
         header {
-            background-color: #333;
+            background: rgba(0, 0, 0, 0.6);
             color: white;
             text-align: center;
-            padding: 1rem;
+            padding: 1.5rem;
         }
         nav {
-            background-color: #444;
-            padding: 0.5rem;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 0.7rem;
             text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
         nav a {
             color: white;
             margin: 0 1rem;
             text-decoration: none;
+            font-weight: 600;
         }
         section {
             padding: 2rem;
-            max-width: 800px;
-            margin: auto;
+            max-width: 900px;
+            margin: 1.5rem auto;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
         }
         .services {
             display: flex;
             flex-wrap: wrap;
-            justify-content: space-around;
+            justify-content: center;
+            gap: 1rem;
         }
         .service {
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
+            color: #222;
             padding: 1rem;
             margin: 1rem;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            width: 200px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            width: 220px;
             text-align: center;
         }
         footer {
-            background-color: #333;
+            background-color: rgba(0, 0, 0, 0.7);
             color: white;
             text-align: center;
             padding: 1rem;
-            position: fixed;
             width: 100%;
-            bottom: 0;
+        }
+        .service img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        .service.show img {
+            display: block;
+        }
+        @media (max-width: 700px) {
+            .services {
+                flex-direction: column;
+                align-items: center;
+            }
+            nav a {
+                display: inline-block;
+                margin: 0.5rem;
+            }
         }
     </style>
 </head>
 <body>
+    <video class="bg-video" autoplay muted loop playsinline>
+        <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">
+        Tu navegador no soporta video de fondo.
+    </video>
+    <div class="overlay"></div>
     <header>
         <h1>Peluquería Elegante</h1>
         <p>Tu estilo, nuestra pasión</p>
@@ -77,20 +130,28 @@
         <h2>Servicios</h2>
         <div class="services">
             <div class="service">
-                <h3>Cortes de Cabello</h3>
+                <h3 onclick="toggleImages(this)">Cortes de Cabello</h3>
                 <p>Cortes modernos y clásicos para hombres y mujeres.</p>
+                <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=400&h=300&fit=crop" alt="Corte moderno">
+                <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&h=300&fit=crop" alt="Corte clásico">
             </div>
             <div class="service">
-                <h3>Coloración</h3>
+                <h3 onclick="toggleImages(this)">Coloración</h3>
                 <p>Tintes y mechas de alta calidad.</p>
+                <img src="https://images.unsplash.com/photo-1559599101-f09722fb4948?w=400&h=300&fit=crop" alt="Coloración">
+                <img src="https://images.unsplash.com/photo-1594824486539-1c1b6b8b8b8b?w=400&h=300&fit=crop" alt="Mechas">
             </div>
             <div class="service">
-                <h3>Tratamientos</h3>
+                <h3 onclick="toggleImages(this)">Tratamientos</h3>
                 <p>Hidratación, reconstrucción y más.</p>
+                <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=400&h=300&fit=crop" alt="Tratamiento capilar">
+                <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=300&fit=crop" alt="Mascarilla">
             </div>
             <div class="service">
-                <h3>Estilismo</h3>
+                <h3 onclick="toggleImages(this)">Estilismo</h3>
                 <p>Peinados para ocasiones especiales.</p>
+                <img src="https://images.unsplash.com/photo-1594824486539-1c1b6b8b8b8b?w=400&h=300&fit=crop" alt="Peinado elegante">
+                <img src="https://images.unsplash.com/photo-1559599101-f09722fb4948?w=400&h=300&fit=crop" alt="Estilismo">
             </div>
         </div>
     </section>
@@ -107,5 +168,11 @@
     <footer>
         <p>&copy; 2023 Peluquería Elegante. Todos los derechos reservados.</p>
     </footer>
+    <script>
+        function toggleImages(element) {
+            const service = element.parentElement;
+            service.classList.toggle('show');
+        }
+    </script>
 </body>
 </html>
